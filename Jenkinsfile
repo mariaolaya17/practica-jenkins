@@ -5,6 +5,7 @@ pipeline {
         stage('Build and Test') {
             steps {
                 sh './mvnw comando-falso'
+                
             }
         }
     }
