@@ -27,14 +27,17 @@ pipeline {
         }
 
         failure {
-            discordSend(
-                description: "Build fallido",
-                footer: "Jenkins",
-                link: env.BUILD_URL,
-                result: currentBuild.currentResult,
-                title: "Pipeline FAILED",
-                webhookURL: "https://discord.com/api/webhooks/1506351241410904124/UBcD_tniWJRcJu37dtXJ949U38JwJec6iPR-Bv7XqN8ntim5zWxWTmcYtWROs4ViuzqW"
-            )
-        }
+    script {
+        def logLines = currentBuild.rawBuild.getLog(15).join('\n')
+
+        discordSend(
+            title: "❌ Pipeline FAILED",
+            description: "El build falló.\n\nÚltimas líneas del error:\n```" + logLines + "```",
+            footer: "Jenkins",
+            link: env.BUILD_URL,
+            result: currentBuild.currentResult,
+            webhookURL: "TU_WEBHOOK"
+        )
     }
+}
 }
