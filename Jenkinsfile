@@ -31,19 +31,34 @@ pipeline {
         def logLines = currentBuild.rawBuild.getLog(15).join('\n')
 
     post {
-        always {
-            script {
-                discordSend(
-                    title: "🚀 TEST DISCORD",
-                    description: "Jenkins sí está enviando mensajes",
-                    footer: "Jenkins",
-                    link: env.BUILD_URL,
-                    webhookURL: "https://discord.com/api/webhooks/1506351241410904124/UBcD_tniWJRcJu37dtXJ949U38JwJec6iPR-Bv7XqN8ntim5zWxWTmcYtWROs4ViuzqW"
-                )
-            }
-        }
+
+    always {
+        junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true
     }
+
+    success {
+        discordSend(
+            title: "✅ Pipeline SUCCESS",
+            description: "Build exitoso",
+            footer: "Jenkins",
+            link: env.BUILD_URL,
+            result: currentBuild.currentResult,
+            webhookURL: "TU_WEBHOOK"
+        )
     }
+
+    failure {
+        discordSend(
+            title: "❌ Pipeline FAILED",
+            description: "El build falló. Revisa la consola de Jenkins.",
+            footer: "Jenkins",
+            link: env.BUILD_URL,
+            result: currentBuild.currentResult,
+            webhookURL: "TU_WEBHOOK"
+        )
+    }
+     }
+ }
         }
     }
 }
