@@ -30,14 +30,20 @@ pipeline {
     script {
         def logLines = currentBuild.rawBuild.getLog(15).join('\n')
 
-    always {
-    discordSend(
-        title: "🚀 Jenkins Ejecutado",
-        description: "Pipeline ejecutado correctamente",
-        footer: "Jenkins",
-        link: env.BUILD_URL,
-        result: currentBuild.currentResult,
-        webhookURL: "https://discord.com/api/webhooks/1506351241410904124/UBcD_tniWJRcJu37dtXJ949U38JwJec6iPR-Bv7XqN8ntim5zWxWTmcYtWROs4ViuzqW"
-    )
-}
+    post {
+        always {
+            script {
+                discordSend(
+                    title: "🚀 TEST DISCORD",
+                    description: "Jenkins sí está enviando mensajes",
+                    footer: "Jenkins",
+                    link: env.BUILD_URL,
+                    webhookURL: "https://discord.com/api/webhooks/1506351241410904124/UBcD_tniWJRcJu37dtXJ949U38JwJec6iPR-Bv7XqN8ntim5zWxWTmcYtWROs4ViuzqW"
+                )
+            }
+        }
+    }
+    }
+        }
+    }
 }
